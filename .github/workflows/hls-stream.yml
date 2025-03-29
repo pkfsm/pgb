@@ -19,7 +19,7 @@ jobs:
           import os, time, subprocess
 
           STREAM_INPUT = "http://mag.premiumplus.tv/play/live.php?mac=00%3A1A%3A79%3AC6%3A7F%3A64&stream=282674&extension=m3u8&play_token="  # Replace with your HLS input
-          RTMP_OUTPUT = "rtmp://bangalore.restream.io/live/re_5437878_evente68e028ddf3945ac8589d7b000962f09"  # Replace with your RTMP server
+          RTMP_OUTPUT = "rtmp://ny.castr.io/static/live_4eaa44800c9411f0adde2f394a2bbc0f?password=4fa2b4fd"  # Replace with your RTMP server
 
           def start_stream():
               return subprocess.Popen([
