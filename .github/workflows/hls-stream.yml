@@ -1,0 +1,39 @@
+name: "6-Hour HLS Stream with Auto-Cleanup (No Auto-Restart)"
+
+on:
+  workflow_dispatch:  # Manual start only
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360  # Max 6 hours
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update && sudo apt install ffmpeg python3 -y
+
+      - name: Start Streaming
+        run: |
+          mkdir -p hls_output
+          ffmpeg -re -i "https://m3u8.cloudycx.net/media/hls/files/1080p.m3u8" \
+            -vf "drawtext=text='PenguTV Live': fontcolor=white: fontsize=24: x=10: y=10" \
+            -c:v libx264 -preset veryfast -b:v 2000k -maxrate 2500k -bufsize 3000k \
+            -c:a aac -b:a 128k -f hls \
+            -hls_time 10 -hls_list_size 10 -hls_flags delete_segments \
+            -hls_segment_filename "hls_output/segment_%03d.ts" \
+            hls_output/index.m3u8
+
+      - name: Cleanup Old Segments
+        run: |
+          find hls_output -type f -name '*.ts' | sort | head -n -10 | xargs rm -f
+
+      - name: Commit and Push HLS Files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add hls_output/*
+          git commit -m "Update HLS stream"
+          git push origin main || echo "No changes to commit"
