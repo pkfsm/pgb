@@ -23,17 +23,18 @@ jobs:
 
           def start_stream():
               return subprocess.Popen([
-                  "ffmpeg", "-re", "-i", STREAM_INPUT,
-                  "-i", "logo.png",
-                  "-filter_complex", "[0:v]scale=-2:min(720,ih)[video]; "  # Scale video to at most 720p
-                                  "[1:v]scale=iw*min(0.1*iw\\, 0.1*ih)/iw:-1[logo]; "  # Scale logo to 10% of video width (max 10% height)
-                                  "[video][logo]overlay=10:10, "  # Position logo in top-left corner
-                                  "drawtext=text='For promotion contact @pengutvapp': "
-                                  "fontcolor=white: fontsize=min(24, 0.04*ih): "  # Scale text to 4% of video height, min size 24
-                                  "box=1: boxcolor=black@0.8: boxborderw=10: x=(w-text_w)/2: y=10",  # Center text at the top
-                  "-c:v", "libx264", "-preset", "veryfast", "-b:v", "2000k", "-maxrate", "2500k", "-bufsize", "3000k",
-                  "-c:a", "aac", "-b:a", "128k", "-f", "flv", RTMP_OUTPUT
-              ])
+                "ffmpeg", "-re", "-i", STREAM_INPUT,
+                "-i", "logo.png",
+                "-filter_complex", "[0:v]scale=-2:min(720,ih)[video]; "  # Scale video to at most 720p
+                                "[1:v]scale=iw*min(0.1*iw\\, 0.1*ih)/iw:-1[logo]; "  # Scale logo to 10% of video width
+                                "[video][logo]overlay=10:10, "  # Position logo in top-left corner
+                                "drawtext=text='For promotion contact @pengutvapp': "
+                                "fontcolor=white: fontsize=24: "  # Use a fixed size for now
+                                "box=1: boxcolor=black@0.8: boxborderw=10: x=(w-text_w)/2: y=10",  # Center text at the top
+                "-c:v", "libx264", "-preset", "veryfast", "-b:v", "2000k", "-maxrate", "2500k", "-bufsize", "3000k",
+                "-c:a", "aac", "-b:a", "128k", "-f", "flv", RTMP_OUTPUT
+            ])
+
 
           process = start_stream()
 
