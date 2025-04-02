@@ -1,36 +1,42 @@
-name: "6-Hour HLS to RTMP Stream (Python Watchdog with Image Overlay)"
+name: "6-Hour HLS to RTMP Stream (Auto Restart)"
 
 on:
-  workflow_dispatch:  # Manual start only
+  workflow_dispatch:  # Manual start
+  push:  # Run on commit
+    branches:
+      - main
 
 jobs:
   stream:
     runs-on: ubuntu-latest
     timeout-minutes: 360  # Max 6 hours
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Install Dependencies
         run: |
-          sudo apt update && sudo apt install ffmpeg python3 wget -y
+          sudo apt update && sudo apt install ffmpeg python3 wget git -y
           wget -O logo.png "https://i.ibb.co/cSjZ9PS2/logo.jpg"
 
-      - name: Start 
+      - name: Start Stream
         run: |
           python3 - <<EOF
           import os, time, subprocess
 
           STREAM_INPUT = "https://ranapk.spidy.online/MACX/dpny/play.php?id=4626"  # Replace with your HLS input
-          RTMP_OUTPUT = "rtmp://ovsu.okcdn.ru/input/882848285_882848285_43_4fe2dfqvr4"  # Replace with your RTMP server
+          RTMP_OUTPUT = "rtmp://stream.livepush.io/live/rtmp_43deda941a144ca69a602d71564f76fd"  # Replace with your RTMP server
 
           def start_stream():
             return subprocess.Popen([
                 "ffmpeg", "-re", "-i", STREAM_INPUT,  # Input Stream
                 "-i", "logo.png",  # Overlay Logo
                 "-filter_complex",
-                "[0:v][1:v]overlay=10:10,"
-                "drawtext=text='For promotion contact @pengutvapp':"
+                "[0:v][1:v]overlay=10:10," \
+                "drawtext=text='For promotion contact @pengutvapp':" \
                 "fontcolor=white:fontsize=24:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=10",
                 "-c:v", "libx264", "-preset", "veryfast", "-b:v", "2000k", "-maxrate", "2500k", "-bufsize", "3000k",
-                "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",  # Fix for LivePush audio issues
+                "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",
                 "-f", "flv", RTMP_OUTPUT
             ])
 
@@ -42,3 +48,12 @@ jobs:
                   print("Stream stopped! Restarting FFmpeg...")
                   process = start_stream()
           EOF
+
+      - name: Commit & Push to Restart Workflow
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          echo "Last run: $(date)" > last_run.txt
+          git add last_run.txt
+          git commit -m "Auto-restart stream: $(date)"
+          git push
