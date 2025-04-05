@@ -25,7 +25,7 @@ jobs:
           import os, time, subprocess
 
           STREAM_INPUT = "https://ranapk.spidy.online/MACX/dpny/play.php?id=4626"  # Replace with your HLS input
-          RTMP_OUTPUT = "rtmp://stream.livepush.io/live/rtmp_43deda941a144ca69a602d71564f76fd"  # Replace with your RTMP server
+          RTMP_OUTPUT = "rtmp://msk.goodgame.ru:1940/live/215125?pwd=7c89f396f7c30742"  # Replace with your RTMP server
 
           def start_stream():
             return subprocess.Popen([
