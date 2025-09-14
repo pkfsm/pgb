@@ -24,8 +24,8 @@ jobs:
           python3 - <<EOF
           import os, time, subprocess
 
-          STREAM_INPUT = "https://fv1161.huibo.tv/GPA/H915/chunks.m3u8?wsSecret=bcac7492fba8e5c2193db46972519871&wsTime=1749131762"  # Replace with your HLS input
-          RTMP_OUTPUT = "rtmps://dc5-1.rtmp.t.me/s/2809955269:JxLLj5Wsxo54k-etFsXFrg"  # Replace with your RTMP server
+          STREAM_INPUT = "http://mag.x-iptv.live/play/live.php?mac=00:1A:79:6D:8F:47&stream=1104671&extension=m3u8&play_token=bH5FXYNaQ9"  # Replace with your HLS input
+          RTMP_OUTPUT = "rtmps://dc5-1.rtmp.t.me/s/3001970419:iSPsOFfXN2f_83uSw3p0Fg"  # Replace with your RTMP server
 
           def start_stream():
             return subprocess.Popen([
