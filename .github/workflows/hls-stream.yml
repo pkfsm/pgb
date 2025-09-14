@@ -24,7 +24,7 @@ jobs:
           python3 - <<EOF
           import os, time, subprocess
 
-          STREAM_INPUT = "https://ranapk-me-awcu.spidy.online/HOT/play.m3u8?c=1540050468&q=hin"  # Replace with your HLS input
+          STREAM_INPUT = "https://crichd1.diwij76343.workers.dev/?v=sonyespnind"  # Replace with your HLS input
           RTMP_OUTPUT = "rtmps://dc5-1.rtmp.t.me/s/3001970419:iSPsOFfXN2f_83uSw3p0Fg"  # Replace with your RTMP server
 
           def start_stream():
