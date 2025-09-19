@@ -41,8 +41,6 @@ jobs:
             ])```
             return subprocess.Popen([
                 "ffmpeg", "-re", "-i", STREAM_INPUT,  # Input Stream
-                "-filter_complex",
-                "[0:v][1:v]overlay=10:10," \
                 "-c:v", "libx264", "-preset", "veryfast", "-b:v", "2000k", "-maxrate", "2500k", "-bufsize", "3000k",
                 "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",
                 "-f", "flv", RTMP_OUTPUT
