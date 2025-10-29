@@ -24,8 +24,8 @@ jobs:
           python3 - <<EOF
           import os, time, subprocess
 
-          STREAM_INPUT = "https://crichd1.diwij76343.workers.dev/?v=sonyespnind"  # Replace with your HLS input
-          RTMP_OUTPUT = "rtmp://msk.goodgame.ru:1940/live/217829?pwd=7c24be644816dd26"  # Replace with your RTMP server
+          STREAM_INPUT = "https://ironman.strangled.net/crichd9.php?v=starhindi"  # Replace with your HLS input
+          RTMP_OUTPUT = "rtmp://msk.goodgame.ru:1940/live/218327?pwd=78e6a9f9ce808559"  # Replace with your RTMP server
 
           def start_stream():
             ```return subprocess.Popen([
