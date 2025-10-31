@@ -25,7 +25,7 @@ jobs:
           import os, time, subprocess
 
           STREAM_INPUT = "https://ironman.strangled.net/crichd9.php?v=starhindi"  # Replace with your HLS input
-          RTMP_OUTPUT = "rtmp://msk.goodgame.ru:1940/live/218327?pwd=78e6a9f9ce808559"  # Replace with your RTMP server
+          RTMP_OUTPUT = "rtmp://ovsu.okcdn.ru/input/-233604729_547457520_43_c6l6o7sk7q"  # Replace with your RTMP server
 
           def start_stream():
             ```return subprocess.Popen([
@@ -40,7 +40,7 @@ jobs:
                 "-f", "flv", RTMP_OUTPUT
             ])```
             return subprocess.Popen([
-                "ffmpeg", "-re", "-i", "https://rumble.com/live-hls-dvr/6ykg6g/playlist.m3u8",  # Input Stream
+                "ffmpeg", "-re", "-i", "https://ironman.strangled.net/crichd9.php?v=starhindi",  # Input Stream
                 "-c:v", "libx264", "-preset", "veryfast", "-b:v", "2000k", "-maxrate", "2500k", "-bufsize", "3000k",
                 "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",
                 "-f", "flv", RTMP_OUTPUT
