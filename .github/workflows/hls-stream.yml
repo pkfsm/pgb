@@ -40,7 +40,7 @@ jobs:
                 "-f", "flv", RTMP_OUTPUT
             ])```
             return subprocess.Popen([
-                "ffmpeg", "-re", "-i", "https://ironman.strangled.net/crichd9.php?v=starhindi",  # Input Stream
+                "ffmpeg", "-re", "-i", "https://1c.yoxeh59833.workers.dev/?v=starhindi",  # Input Stream
                 "-c:v", "libx264", "-preset", "veryfast", "-b:v", "2000k", "-maxrate", "2500k", "-bufsize", "3000k",
                 "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",
                 "-f", "flv", RTMP_OUTPUT
