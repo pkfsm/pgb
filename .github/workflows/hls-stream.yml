@@ -1,6 +1,8 @@
 name: "6-Hour HLS to RTMP Stream (Auto Restart)"
 
 on:
+  schedule:
+      - cron: "55 */5 * * *" 
   workflow_dispatch:  # Manual trigger
   push:               # Auto trigger when commit happens
     branches:
