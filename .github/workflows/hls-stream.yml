@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update && sudo apt install ffmpeg python3 wget git -y
-          wget -O logo.png "https://i.ibb.co/cSjZ9PS2/logo.jpg"
+          wget -O logo.png "https://i.ibb.co/RpxXQsXk/CURSED-STREAM.png"
 
       - name: Start Stream
         run: |
