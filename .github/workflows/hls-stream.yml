@@ -1,15 +1,15 @@
 name: "6-Hour HLS to RTMP Stream (Auto Restart)"
 
 on:
-  workflow_dispatch:  # Manual start
-  push:  # Run on commit
+  workflow_dispatch:  # Manual trigger
+  push:               # Auto trigger when commit happens
     branches:
       - main
 
 jobs:
   stream:
     runs-on: ubuntu-latest
-    timeout-minutes: 360  # Max 6 hours
+    timeout-minutes: 360  # 6 hours
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -21,45 +21,37 @@ jobs:
 
       - name: Start Stream
         run: |
-          python3 - <<EOF
-          import os, time, subprocess
+          python3 - <<'EOF'
+          import subprocess, time
 
-          STREAM_INPUT = "https://ironman.strangled.net/crichd9.php?v=starhindi"  # Replace with your HLS input
-          RTMP_OUTPUT = "rtmp://ovsu.okcdn.ru/input/-233604729_547457520_43_c6l6o7sk7q"  # Replace with your RTMP server
+          STREAM_INPUT = "https://1c.yoxeh59833.workers.dev/?v=starhindi"
+          RTMP_OUTPUT = "rtmp://ovsu.okcdn.ru/input/-233604729_547457520_43_c6l6o7sk7q"
 
           def start_stream():
-            ```return subprocess.Popen([
-                "ffmpeg", "-re", "-i", STREAM_INPUT,  # Input Stream
-                "-i", "logo.png",  # Overlay Logo
-                "-filter_complex",
-                "[0:v][1:v]overlay=10:10," \
-                "drawtext=text='For promotion contact @pengutvapp':" \
-                "fontcolor=white:fontsize=24:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=10",
-                "-c:v", "libx264", "-preset", "veryfast", "-b:v", "2000k", "-maxrate", "2500k", "-bufsize", "3000k",
-                "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",
-                "-f", "flv", RTMP_OUTPUT
-            ])```
-            return subprocess.Popen([
-                "ffmpeg", "-re", "-i", "https://1c.yoxeh59833.workers.dev/?v=starhindi",  # Input Stream
-                "-c:v", "libx264", "-preset", "veryfast", "-b:v", "2000k", "-maxrate", "2500k", "-bufsize", "3000k",
-                "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",
-                "-f", "flv", RTMP_OUTPUT
-            ])
+              return subprocess.Popen([
+                  "ffmpeg", "-re", "-i", STREAM_INPUT,
+                  "-i", "logo.png",
+                  "-filter_complex",
+                  "[0:v][1:v]overlay=10:10,drawtext=text='For promotion contact @pengutvapp':fontcolor=white:fontsize=24:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=10",
+                  "-c:v", "libx264", "-preset", "veryfast", "-b:v", "2000k", "-maxrate", "2500k", "-bufsize", "3000k",
+                  "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",
+                  "-f", "flv", RTMP_OUTPUT
+              ])
 
           process = start_stream()
-
           while True:
               time.sleep(30)
-              if process.poll() is not None:  # If FFmpeg stops, restart it
+              if process.poll() is not None:
                   print("Stream stopped! Restarting FFmpeg...")
                   process = start_stream()
           EOF
 
-      - name: Commit & Push to Restart Workflow
+      - name: Auto-restart (commit to trigger again)
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          echo "Last run: $(date)" > last_run.txt
+          echo "Restarted: $(date)" > last_run.txt
           git add last_run.txt
-          git commit -m "Auto-restart stream: $(date)"
+          git commit -m "Auto-restart stream $(date)" || echo "No changes to commit"
           git push
+          
