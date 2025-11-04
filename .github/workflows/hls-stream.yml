@@ -26,7 +26,7 @@ jobs:
           python3 - <<'EOF'
           import subprocess, time
 
-          STREAM_INPUT = "http://expotv.cc/play/live.php?mac=00:1B:79:34:0B:E8&stream=1114582&extension=m3u8"
+          STREAM_INPUT = "http://firstclass007.com:8080/play/live.php?mac=00:1A:79:01:70:9F&stream=642541&extension=m3u8"
           RTMP_OUTPUT = "rtmp://ovsu.okcdn.ru/input/1081439512_1081439512_43_lcoq56a4be"
 
           def start_stream():
